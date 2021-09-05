@@ -1,18 +1,16 @@
 package com.agenda.agendamentos.service;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.agenda.agendamentos.dto.ServicoDto;
 import com.agenda.agendamentos.entity.Servico;
-import com.agenda.agendamentos.exception.ErrorException;
+import com.agenda.agendamentos.exception.NotFoundException;
 import com.agenda.agendamentos.repository.ServicoRepository;
 
 @Service
@@ -39,7 +37,7 @@ public class ServicoService {
     @Transactional(readOnly = true)
     public Servico findById(UUID id) {
     	return servicoRepository.findById(id)
-				.orElseThrow(() -> ErrorException.SERVICE_NOT_FOUND.toExceptions(HttpStatus.NOT_FOUND));
+				.orElseThrow(() -> new NotFoundException());
 		
     }
 	
@@ -52,7 +50,7 @@ public class ServicoService {
 	public void delete(UUID id) {
 	
 		Servico servico = servicoRepository.findById(id)
-		.orElseThrow(() -> ErrorException.SERVICE_NOT_FOUND.toExceptions(HttpStatus.NOT_FOUND));
+		.orElseThrow(() -> new NotFoundException());
 		
 		servicoRepository.delete(servico);
 	}
@@ -60,10 +58,11 @@ public class ServicoService {
 	public Servico update(UUID id, ServicoDto entity) {
 		
 		Servico servico = servicoRepository.findById(id)
-				.orElseThrow(() -> ErrorException.SERVICE_NOT_FOUND.toExceptions(HttpStatus.NOT_FOUND));
+				.orElseThrow(() -> new NotFoundException());
 		
 		servico.setDescricao(Objects.requireNonNullElse(entity.getDescricao(), servico.getDescricao()));
-		servico.setValor((BigDecimal) Objects.requireNonNullElse(entity.getDescricao(), servico.getValor()));
+		if(entity.getValor() != null) servico.setValor(entity.getValor());
+		
 		servicoRepository.save(servico);
 		
 		return servico;

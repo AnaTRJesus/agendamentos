@@ -30,7 +30,7 @@ public class Servico {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@EqualsAndHashCode.Include
-	private UUID codido;
+	private UUID id;
 	
 	@Column
 	private String descricao;
