@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.agenda.agendamentos.dto.ServicoDto;
 import com.agenda.agendamentos.entity.Servico;
+import com.agenda.agendamentos.exception.ConstrainException;
 import com.agenda.agendamentos.exception.NotFoundException;
 import com.agenda.agendamentos.repository.ServicoRepository;
 
@@ -42,6 +43,11 @@ public class ServicoService {
     }
 	
 	public Servico create(ServicoDto entity) {
+		
+		if(entity.getDescricao() == null || entity.getDescricao().equals("")) throw new ConstrainException("O campo descrição deve estar preenchido");
+		
+		if(entity.getValor() == null || entity.getValor().equals("")) throw new ConstrainException("O campo valor deve estra preenchido");
+
 		
 		Servico servico = Servico.builder().descricao(entity.getDescricao()).valor(entity.getValor()).build();
 		return servicoRepository.save(servico);

@@ -12,9 +12,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ErrorHandler {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Object> handle(Exception ex, 
+    public ResponseEntity<Object> handleNotFound(Exception ex, 
                 HttpServletRequest request, HttpServletResponse response) {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage()); 		
     }
+    
+    @ExceptionHandler(ConstrainException.class)
+    public ResponseEntity<Object> handleConstrains(Exception ex, 
+                HttpServletRequest request, HttpServletResponse response) {
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage()); 		
+    }
 }
+
