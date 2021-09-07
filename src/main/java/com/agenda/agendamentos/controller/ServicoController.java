@@ -86,10 +86,6 @@ public class ServicoController {
 
 	@GetMapping
 	public Page<Servico> findAllPageable(    
-			@RequestParam(
-    		value = "status",
-    		required = false
-    		) String status,
     @RequestParam(
             value = "page",
             required = false,

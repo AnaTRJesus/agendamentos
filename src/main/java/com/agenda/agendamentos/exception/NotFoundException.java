@@ -4,7 +4,7 @@ public class NotFoundException extends RuntimeException {
 
  static final long serialVersionUID = 1L;
 
-	public NotFoundException() {
-		super("Não encontrado");
+	public NotFoundException(String message) {
+		super(message);
 	}
 }

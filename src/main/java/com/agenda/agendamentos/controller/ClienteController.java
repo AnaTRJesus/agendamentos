@@ -69,7 +69,7 @@ public class ClienteController {
 	@PostMapping
 	public ResponseEntity<ClienteResponse> create(@RequestBody ClienteDto cliente){
 		Cliente clienteSaved = service.create(cliente);
-	    return ResponseEntity.created(URI.create(String.format("/servico/%s", clienteSaved.getId().toString()))).body(new ClienteResponse(clienteSaved));
+	    return ResponseEntity.created(URI.create(String.format("/cliente/%s", clienteSaved.getId().toString()))).body(new ClienteResponse(clienteSaved));
 	}
 
 	
@@ -86,10 +86,6 @@ public class ClienteController {
 
 	@GetMapping
 	public Page<Cliente> findAllPageable(    
-			@RequestParam(
-    		value = "status",
-    		required = false
-    		) String status,
     @RequestParam(
             value = "page",
             required = false,
@@ -193,6 +189,6 @@ public class ClienteController {
 	@PutMapping("/{id}")
 	public ResponseEntity<ClienteResponse> update(@PathVariable("id")UUID id, @RequestBody ClienteDto servico){
 		Cliente clienteUpdated = service.update(id, servico);
-	    return ResponseEntity.created(URI.create(String.format("/servico/%s", clienteUpdated.getId()))).body(new ClienteResponse(clienteUpdated));
+	    return ResponseEntity.created(URI.create(String.format("/cliente/%s", clienteUpdated.getId()))).body(new ClienteResponse(clienteUpdated));
 	}
 }

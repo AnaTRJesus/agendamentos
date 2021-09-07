@@ -8,9 +8,9 @@ import lombok.Data;
 @Data
 public class ClienteDto {
 	
-	@Schema(description = "Nome do cliente")
+	@Schema(description = "Nome do cliente", required = true)
 	private String nome;
 	
-	@Schema(description = "CPF do cliente ")
+	@Schema(description = "CPF do cliente ", required = true)
 	private String cpf;
 }

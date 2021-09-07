@@ -38,7 +38,7 @@ public class ServicoService {
     @Transactional(readOnly = true)
     public Servico findById(UUID id) {
     	return servicoRepository.findById(id)
-				.orElseThrow(() -> new NotFoundException());
+				.orElseThrow(() -> new NotFoundException("O serviço não foi encontrado"));
 		
     }
 	
@@ -56,7 +56,7 @@ public class ServicoService {
 	public void delete(UUID id) {
 	
 		Servico servico = servicoRepository.findById(id)
-		.orElseThrow(() -> new NotFoundException());
+		.orElseThrow(() -> new NotFoundException("O serviço não foi encontrado"));
 		
 		servicoRepository.delete(servico);
 	}
@@ -64,7 +64,7 @@ public class ServicoService {
 	public Servico update(UUID id, ServicoDto entity) {
 		
 		Servico servico = servicoRepository.findById(id)
-				.orElseThrow(() -> new NotFoundException());
+				.orElseThrow(() -> new NotFoundException("O serviço não foi ncontrado"));
 		
 		servico.setDescricao(Objects.requireNonNullElse(entity.getDescricao(), servico.getDescricao()));
 		if(entity.getValor() != null) servico.setValor(entity.getValor());

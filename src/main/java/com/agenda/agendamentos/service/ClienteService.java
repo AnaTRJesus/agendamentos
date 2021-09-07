@@ -19,26 +19,26 @@ import com.agenda.agendamentos.repository.ClienteRepository;
 
 public class ClienteService {
 	
-	private final ClienteRepository ClienteRepository;
+	private final ClienteRepository clienteRepository;
 	
-	public ClienteService(ClienteRepository ClienteRepository) {
-		this.ClienteRepository = ClienteRepository;
+	public ClienteService(ClienteRepository clienteRepository) {
+		this.clienteRepository = clienteRepository;
 	}
 	
     @Transactional(readOnly = true)
 	public Page<Cliente> findAllPageable(Pageable pageable) {
-		return ClienteRepository.findAll(pageable);
+		return clienteRepository.findAll(pageable);
 	}
 	
     @Transactional(readOnly = true)
 	public Iterable<Cliente> findAll(){
-		return ClienteRepository.findAll();
+		return clienteRepository.findAll();
 	}
     
     @Transactional(readOnly = true)
     public Cliente findById(UUID id) {
-    	return ClienteRepository.findById(id)
-				.orElseThrow(() -> new NotFoundException());
+    	return clienteRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("O cliente não foi encontrado"));
 		
     }
 	
@@ -49,26 +49,26 @@ public class ClienteService {
 		if(entity.getNome() == null || entity.getNome().equals("")) throw new ConstrainException("O campo Nome deve estra preenchido");
 
 		Cliente cliente = Cliente.builder().cpf(entity.getCpf()).nome(entity.getNome()).build();
-		return ClienteRepository.save(cliente);
+		return clienteRepository.save(cliente);
 	}
 	
 	public void delete(UUID id) {
 	
-		Cliente Cliente = ClienteRepository.findById(id)
-		.orElseThrow(() -> new NotFoundException());
+		Cliente Cliente = clienteRepository.findById(id)
+		.orElseThrow(() -> new NotFoundException("O cliente não foi encontrado"));
 		
-		ClienteRepository.delete(Cliente);
+		clienteRepository.delete(Cliente);
 	}
 	
 	public Cliente update(UUID id, ClienteDto entity) {
 		
-		Cliente cliente = ClienteRepository.findById(id)
-				.orElseThrow(() -> new NotFoundException());
+		Cliente cliente = clienteRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("O cliente não foi encontrado"));
 		
 		cliente.setCpf(Objects.requireNonNullElse(entity.getCpf(), cliente.getCpf()));
 		cliente.setNome(Objects.requireNonNullElse(entity.getNome(), cliente.getNome()));
 		
-		ClienteRepository.save(cliente);
+		clienteRepository.save(cliente);
 		
 		return cliente;
 	}

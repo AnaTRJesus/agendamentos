@@ -10,9 +10,9 @@ import lombok.Data;
 @Data
 public class ServicoDto {
 	
-	@Schema(description = "Descricao do servico")
+	@Schema(description = "Descricao do servico", required = true)
 	private String descricao;
 	
-	@Schema(description = "Preço do serviço")
+	@Schema(description = "Preço do serviço", required = true)
 	private BigDecimal valor;
 }
