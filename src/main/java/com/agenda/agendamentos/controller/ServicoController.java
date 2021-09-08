@@ -186,7 +186,7 @@ public class ServicoController {
 				       				schema = @Schema(implementation = NotFoundException.class))),
 
 			})	
-	@PutMapping("/{id}")
+	@PutMapping(value = "/{id}")
 	public ResponseEntity<ServicoResponse> update(@PathVariable("id")UUID id, @RequestBody ServicoDto servico){
 		Servico servicoUpdated = service.update(id, servico);
 	    return ResponseEntity.created(URI.create(String.format("/servico/%s", servicoUpdated.getId()))).body(new ServicoResponse(servicoUpdated));

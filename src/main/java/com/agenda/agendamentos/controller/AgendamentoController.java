@@ -61,7 +61,7 @@ public class AgendamentoController {
 				       				mediaType = "application/json",
 				       				schema = @Schema(implementation = Exception.class))),
 			})
-	@PostMapping()
+	@PostMapping
 	public ResponseEntity<AgendamentoResponse> create(@RequestBody AgendamentoDto agendamento){
 		Agendamento agendamentoSaved = service.create(agendamento);
 	    return ResponseEntity.created(URI.create(String.format("/agendamento/%s", agendamentoSaved.getId().toString()))).build();
@@ -133,10 +133,10 @@ public class AgendamentoController {
 
 			})	
 
-	@PutMapping("remarcar/{id}")
-	public ResponseEntity<AgendamentoResponse> update(@PathVariable("id")UUID id, @RequestBody String dataHora){
-		Agendamento agendamentoUpdated = service.remarcarAgendamento(dataHora, id);
-	    return ResponseEntity.created(URI.create(String.format("/agendamento/%s", agendamentoUpdated.getId()))).body(new AgendamentoResponse(agendamentoUpdated));
+	@PutMapping(value = "remarcar/{id}")
+	public ResponseEntity<AgendamentoResponse> update(@PathVariable("id")UUID id, @RequestBody AgendamentoDto agendamento){
+		Agendamento agendamentoUpdated = service.remarcarAgendamento(agendamento.getDataHora(), id);
+	    return ResponseEntity.created(URI.create(String.format("/agendamento/%s", agendamentoUpdated.getId()))).build();
 	}
 	
 	
@@ -151,7 +151,7 @@ public class AgendamentoController {
 		       				mediaType = "application/json",
 		       				schema = @Schema(implementation = AgendamentoResponse.class)))})
 
-	@GetMapping("sorted")
+	@GetMapping(value = "sorted")
 	public Page<Agendamento> findAllPageableSorted(    
     @RequestParam(
             value = "page",

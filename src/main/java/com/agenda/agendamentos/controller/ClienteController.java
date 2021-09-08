@@ -121,7 +121,7 @@ public class ClienteController {
 				       				mediaType = "application/json",
 				       				schema = @Schema(implementation = Exception.class))),
 				})
-	@GetMapping("/{id}")
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<ClienteResponse> findById(@PathVariable("id") UUID id){
 		Cliente cliente =  service.findById(id);
 		return ResponseEntity.ok(new ClienteResponse(cliente));
@@ -186,7 +186,7 @@ public class ClienteController {
 				       				schema = @Schema(implementation = NotFoundException.class))),
 
 			})	
-	@PutMapping("/{id}")
+	@PutMapping(value = "/{id}")
 	public ResponseEntity<ClienteResponse> update(@PathVariable("id")UUID id, @RequestBody ClienteDto servico){
 		Cliente clienteUpdated = service.update(id, servico);
 	    return ResponseEntity.created(URI.create(String.format("/cliente/%s", clienteUpdated.getId()))).body(new ClienteResponse(clienteUpdated));
