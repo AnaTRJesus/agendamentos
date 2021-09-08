@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agenda.agendamentos.dto.AgendamentoDto;
 import com.agenda.agendamentos.entity.Agendamento;
 import com.agenda.agendamentos.exception.NotFoundException;
-import com.agenda.agendamentos.response.AgendamentoResponse;
 import com.agenda.agendamentos.service.AgendamentoService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,9 +61,9 @@ public class AgendamentoController {
 				       				schema = @Schema(implementation = Exception.class))),
 			})
 	@PostMapping
-	public ResponseEntity<AgendamentoResponse> create(@RequestBody AgendamentoDto agendamento){
+	public ResponseEntity<Agendamento> create(@RequestBody AgendamentoDto agendamento){
 		Agendamento agendamentoSaved = service.create(agendamento);
-	    return ResponseEntity.created(URI.create(String.format("/agendamento/%s", agendamentoSaved.getId().toString()))).build();
+	    return ResponseEntity.created(URI.create(String.format("/agendamento/%s", agendamentoSaved.getId().toString()))).body(agendamentoSaved);
 	}
 
 	
@@ -77,7 +76,7 @@ public class AgendamentoController {
 		           content =
 		       		   @Content(
 		       				mediaType = "application/json",
-		       				schema = @Schema(implementation = AgendamentoResponse.class)))})
+		       				schema = @Schema(implementation = Agendamento.class)))})
 
 	@GetMapping
 	public Page<Agendamento> findAllPageable(    
@@ -108,7 +107,7 @@ public class AgendamentoController {
 		           content =
 		       		   @Content(
 		       				mediaType = "application/json",
-		       				schema = @Schema(implementation = AgendamentoResponse.class))),
+		       				schema = @Schema(implementation = Agendamento.class))),
 				@ApiResponse(
 					       responseCode = "422",
 				           description = "Unsucessful operation",
@@ -134,9 +133,9 @@ public class AgendamentoController {
 			})	
 
 	@PutMapping(value = "remarcar/{id}")
-	public ResponseEntity<AgendamentoResponse> update(@PathVariable("id")UUID id, @RequestBody AgendamentoDto agendamento){
+	public ResponseEntity<Agendamento> update(@PathVariable("id")UUID id, @RequestBody AgendamentoDto agendamento){
 		Agendamento agendamentoUpdated = service.remarcarAgendamento(agendamento.getDataHora(), id);
-	    return ResponseEntity.created(URI.create(String.format("/agendamento/%s", agendamentoUpdated.getId()))).build();
+	    return ResponseEntity.created(URI.create(String.format("/agendamento/%s", agendamentoUpdated.getId()))).body(agendamentoUpdated);
 	}
 	
 	
@@ -149,7 +148,7 @@ public class AgendamentoController {
 		           content =
 		       		   @Content(
 		       				mediaType = "application/json",
-		       				schema = @Schema(implementation = AgendamentoResponse.class)))})
+		       				schema = @Schema(implementation = Agendamento.class)))})
 
 	@GetMapping(value = "sorted")
 	public Page<Agendamento> findAllPageableSorted(    

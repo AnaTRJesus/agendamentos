@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agenda.agendamentos.dto.ClienteDto;
 import com.agenda.agendamentos.entity.Cliente;
 import com.agenda.agendamentos.exception.NotFoundException;
-import com.agenda.agendamentos.response.ClienteResponse;
 import com.agenda.agendamentos.service.ClienteService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,7 +49,7 @@ public class ClienteController {
 		           content =
 		       		   @Content(
 		       				mediaType = "application/json",
-		       				schema = @Schema(implementation = ClienteResponse.class))),
+		       				schema = @Schema(implementation = Cliente.class))),
 				@ApiResponse(
 					       responseCode = "422",
 				           description = "Unsucessful operation",
@@ -67,9 +66,9 @@ public class ClienteController {
 				       				schema = @Schema(implementation = Exception.class))),
 			})
 	@PostMapping
-	public ResponseEntity<ClienteResponse> create(@RequestBody ClienteDto cliente){
+	public ResponseEntity<Cliente> create(@RequestBody ClienteDto cliente){
 		Cliente clienteSaved = service.create(cliente);
-	    return ResponseEntity.created(URI.create(String.format("/cliente/%s", clienteSaved.getId().toString()))).body(new ClienteResponse(clienteSaved));
+	    return ResponseEntity.created(URI.create(String.format("/cliente/%s", clienteSaved.getId().toString()))).body(clienteSaved);
 	}
 
 	
@@ -82,7 +81,7 @@ public class ClienteController {
 		           content =
 		       		   @Content(
 		       				mediaType = "application/json",
-		       				schema = @Schema(implementation = ClienteResponse.class)))})
+		       				schema = @Schema(implementation = Cliente.class)))})
 
 	@GetMapping
 	public Page<Cliente> findAllPageable(    
@@ -112,7 +111,7 @@ public class ClienteController {
 		           content =
 		       		   @Content(
 		       				mediaType = "application/json",
-		       				schema = @Schema(implementation = ClienteResponse.class))),
+		       				schema = @Schema(implementation = Cliente.class))),
 				@ApiResponse(
 					       responseCode = "404",
 				           description = "Not found",
@@ -122,9 +121,9 @@ public class ClienteController {
 				       				schema = @Schema(implementation = Exception.class))),
 				})
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<ClienteResponse> findById(@PathVariable("id") UUID id){
+	public ResponseEntity<Cliente> findById(@PathVariable("id") UUID id){
 		Cliente cliente =  service.findById(id);
-		return ResponseEntity.ok(new ClienteResponse(cliente));
+		return ResponseEntity.ok(cliente);
 	}
 	
 	@Operation(summary= "Excluir cliente por id")
@@ -136,7 +135,7 @@ public class ClienteController {
 		           content =
 		       		   @Content(
 		       				mediaType = "application/json",
-		       				schema = @Schema(implementation = ClienteResponse.class))),
+		       				schema = @Schema(implementation = Cliente.class))),
 				@ApiResponse(
 					       responseCode = "404",
 				           description = "Not found",
@@ -162,7 +161,7 @@ public class ClienteController {
 		           content =
 		       		   @Content(
 		       				mediaType = "application/json",
-		       				schema = @Schema(implementation = ClienteResponse.class))),
+		       				schema = @Schema(implementation = Cliente.class))),
 				@ApiResponse(
 					       responseCode = "422",
 				           description = "Unsucessful operation",
@@ -187,8 +186,8 @@ public class ClienteController {
 
 			})	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ClienteResponse> update(@PathVariable("id")UUID id, @RequestBody ClienteDto servico){
+	public ResponseEntity<Cliente> update(@PathVariable("id")UUID id, @RequestBody ClienteDto servico){
 		Cliente clienteUpdated = service.update(id, servico);
-	    return ResponseEntity.created(URI.create(String.format("/cliente/%s", clienteUpdated.getId()))).body(new ClienteResponse(clienteUpdated));
+	    return ResponseEntity.created(URI.create(String.format("/cliente/%s", clienteUpdated.getId()))).body(clienteUpdated);
 	}
 }

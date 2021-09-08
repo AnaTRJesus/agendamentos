@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agenda.agendamentos.dto.ServicoDto;
 import com.agenda.agendamentos.entity.Servico;
 import com.agenda.agendamentos.exception.NotFoundException;
-import com.agenda.agendamentos.response.ServicoResponse;
 import com.agenda.agendamentos.service.ServicoService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,7 +49,7 @@ public class ServicoController {
 		           content =
 		       		   @Content(
 		       				mediaType = "application/json",
-		       				schema = @Schema(implementation = ServicoResponse.class))),
+		       				schema = @Schema(implementation = Servico.class))),
 				@ApiResponse(
 					       responseCode = "422",
 				           description = "Unsucessful operation",
@@ -67,9 +66,9 @@ public class ServicoController {
 				       				schema = @Schema(implementation = Exception.class))),
 			})
 	@PostMapping
-	public ResponseEntity<ServicoResponse> create(@RequestBody ServicoDto servico){
+	public ResponseEntity<Servico> create(@RequestBody ServicoDto servico){
 		Servico servicoSaved = service.create(servico);
-	    return ResponseEntity.created(URI.create(String.format("/servico/%s", servicoSaved.getId().toString()))).body(new ServicoResponse(servicoSaved));
+	    return ResponseEntity.created(URI.create(String.format("/servico/%s", servicoSaved.getId().toString()))).body(servicoSaved);
 	}
 
 	
@@ -82,7 +81,7 @@ public class ServicoController {
 		           content =
 		       		   @Content(
 		       				mediaType = "application/json",
-		       				schema = @Schema(implementation = ServicoResponse.class)))})
+		       				schema = @Schema(implementation = Servico.class)))})
 
 	@GetMapping
 	public Page<Servico> findAllPageable(    
@@ -112,7 +111,7 @@ public class ServicoController {
 		           content =
 		       		   @Content(
 		       				mediaType = "application/json",
-		       				schema = @Schema(implementation = ServicoResponse.class))),
+		       				schema = @Schema(implementation = Servico.class))),
 				@ApiResponse(
 					       responseCode = "404",
 				           description = "Not found",
@@ -122,9 +121,9 @@ public class ServicoController {
 				       				schema = @Schema(implementation = Exception.class))),
 				})
 	@GetMapping("/{id}")
-	public ResponseEntity<ServicoResponse> findById(@PathVariable("id") UUID id){
+	public ResponseEntity<Servico> findById(@PathVariable("id") UUID id){
 		Servico servico =  service.findById(id);
-		return ResponseEntity.ok(new ServicoResponse(servico));
+		return ResponseEntity.ok(servico);
 	}
 	
 	@Operation(summary= "Excluir serviço por id")
@@ -136,7 +135,7 @@ public class ServicoController {
 		           content =
 		       		   @Content(
 		       				mediaType = "application/json",
-		       				schema = @Schema(implementation = ServicoResponse.class))),
+		       				schema = @Schema(implementation = Servico.class))),
 				@ApiResponse(
 					       responseCode = "404",
 				           description = "Not found",
@@ -162,7 +161,7 @@ public class ServicoController {
 		           content =
 		       		   @Content(
 		       				mediaType = "application/json",
-		       				schema = @Schema(implementation = ServicoResponse.class))),
+		       				schema = @Schema(implementation = Servico.class))),
 				@ApiResponse(
 					       responseCode = "422",
 				           description = "Unsucessful operation",
@@ -187,8 +186,8 @@ public class ServicoController {
 
 			})	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ServicoResponse> update(@PathVariable("id")UUID id, @RequestBody ServicoDto servico){
+	public ResponseEntity<Servico> update(@PathVariable("id")UUID id, @RequestBody ServicoDto servico){
 		Servico servicoUpdated = service.update(id, servico);
-	    return ResponseEntity.created(URI.create(String.format("/servico/%s", servicoUpdated.getId()))).body(new ServicoResponse(servicoUpdated));
+	    return ResponseEntity.created(URI.create(String.format("/servico/%s", servicoUpdated.getId()))).body(servicoUpdated);
 	}
 }
